@@ -1,0 +1,44 @@
+
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+#  app:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - db
+#      - redis
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/lostandfound
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+
+
+#https://github.com/navikt/mock-oauth2-server/pkgs/container/mock-oauth2-server
+  mock_user_service:
+    image: ghcr.io/navikt/mock-oauth2-server:2.1.9
+    ports:
+      - 8090:8080
+
+
+  redis:
+    image: redis:latest
+    container_name: my_redis
+    ports:
+      - "6379:6379" # Expose Redis on port 6379
+    volumes:
+      - redis_data:/data # Persist Redis data
+
+
+volumes:
+  redis_data:
